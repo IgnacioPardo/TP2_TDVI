@@ -1,0 +1,29 @@
+model;filename;validation;private_score;public_score;status;date;description
+bag(xgb);bagging_xgb_best_params_polyfeat;0.90251;0.8847;0.8829;Complete (after deadline); 2d ago;
+bag(xgb);bagging_xgb_polyfeat;0.90157;0.88613;0.88451;Complete (after deadline); 2d ago;
+voting(rfc xgb hgb abc);voting(rfc xgb hgb abc);0.89254;0.87934;0.8797;Complete (after deadline); 2d ago;
+bag(xgb);bagging_xgb_polyfeat_imp_pred_pdp_pca_embs;0.89468;0.88343;0.88094;Complete; 2d ago;
+stack(xgb hgb abc);stack(xgb hgb abc)_polyfeat_imp_pred_pdppca_embs;0.89422;0.87878;0.8819;Complete; 2d ago;
+bag(xgb);bagging_xgb_polyfeat_imp_pred_pdp_pca_embs_;0.89620;0.87918;0.88083;Complete; 2d ago;
+stack(xgb hgb abc);stack_optimized(xgb hgb abc)_polyfeat_imp_pred_pdp_pca_embs_;0.89082;0.87321;0.87389;Complete; 2d ago;
+stack(xgb hgb abc);stack(xgb hgb abc)_polyfeat_imp_pred_pdppca_embs;0.89221;0.87997;0.88044;Complete; 3d ago;
+xgb;xgb_hp_polyfeat_imp_pred_pdp_pca_embs;0.89336;0.87044;0.87144;Complete; 3d ago;
+xgb;xgb_randomized_search_full_polyfeat_imp_pred_pdp_pca_embs;0.89740;0.881;0.88227;Complete; 3d ago;
+bag(xgb);bagging_xgb_polyfeat_imp_pred_pdp_pca_embs;0.90079;0.88623;0.88633;Complete; 11d ago;bagging_xgb_polyfeat_imp_pred_pdp_pca_embs: 0.90079 2023-09-25 17:58:29
+voting(rfc xgb hgb abc bag(xgb));voting_alt2(rfc xgb hgb abc bg_xgb)_polyfeat_imp_pred_pdp_pca_embs;0.90152;0.88189;0.88333;Complete; 11d ago;VotingClassifier( estimators=[ ("rfc", rfc), ("xgb", xgb4_model), ("hgb", hgb), ("abc", abc), ("bg_xgb", bagging_classifier_xgb), ], voting="soft" submission_voting_alt2(rfc, xgb, hgb, abc, bg_xgb)_polyfeat_imp_pred_pdp_pca_embs: 0.90152 2023-09-25 15:38:37
+voting(rfc xgb hgb abc bag(xgb));voting_alt2(rfc xgb hgb abc bg_xgb)_polyfeat_imp_pred_pdp_pca_embs;0.89835;0.88686;0.88608;Complete; 11d ago;submission_voting_alt2(rfc, xgb, hgb, abc, bg_xgb)_polyfeat_imp_pred_pdp_pca_embs: 0.89835 2023-09-25 14:30:25
+bag(xgb);bagging_xgb_polyfeat_w2v;0.89864;0.88568;0.88366;Complete; 1mo ago;
+stack(xgb hgb abc);stack(xgb hgb abc);0.89412;0.88681;0.88695;Complete; 1mo ago;
+voting(rfc xgb hgb abc);voting(rfc xgb hgb abc);0.89407;0.88855;0.88389;Complete; 1mo ago;
+avg(stack(bag(xgb) rfc xgb hgb abc)->logreg voting(xgb hgb abc));avg(stack(bagging_classifier_xgb(xgb) xgb hgb abc) voting(xgb hgb abc))_full_data;0.897703442468713;0.88746;0.88637;Complete;1mo ago;
+avg(stack(rfc xgb hgb abc)->logreg voting(xgb hgb abc));average_classifier_imputed;;0.88818;0.88685;Complete; 1mo ago;StackingClassifier( estimators=[ ("rfc", rfc), ("xgb", xgb4_model), ("hgb", hgb), ("abc", abc), ], final_estimator=LogisticRegression() ) VotingClassifier( estimators=[ ("rfc", rfc), ("xgb", xgb4_model), ("hgb", hgb), ("abc", abc), ], voting="soft", ) AverageClassifier([voting_alt, stacking_classifier])
+avg(stack(bag(xgb) xgb hgb abc)->logreg voting(xgb hgb abc));average_classifier_;;0.88963;0.88677;Complete; 1mo ago;VotingClassifier( estimators=[ ("rfc", rfc), ("xgb", xgb4_model), ("hgb", hgb), ("abc", abc), ], voting="soft", ) StackingClassifier( estimators=[ ("rfc", rfc), ("xgb", xgb4_model), ("hgb", hgb), ("abc", abc), ], final_estimator=LogisticRegression(), ) Full AverageClassifier([voting_alt, stacking_classifier])
+avg(rfc xgb hgb abc voting(rfc xgb hgb abc))->logreg voting(xgb hgb abc));average_classifier;;0.87933;0.87505;Complete; 1mo ago;voting_alt = VotingClassifier( estimators=[ ("rf", rf), ("xgb", xgb4_model), ("hgb", hgb), ("abc", abc), ], voting="soft" ) AverageClassifier([rfc, xgb4_model, hgb, abc, voting_alt])
+xgb;XGB_2_Imputed_is_pdp;;0.87946;0.87753;Complete; 1mo ago;xgb2.ipynb
+xgb;XGB_1;;0.76257;0.75868;Complete; 1mo ago;Restart, XGBClassifier default, random_state = 12345
+xgb;XGB_Poly_StandardScaler;;0.70861;0.70741;Complete; 1mo ago;🤷‍♂️
+xgb;XGB_HP_Colab;;0.73238;0.73472;Complete; 1mo ago;XGBClassifier({'colsample_bytree': 0.8337751225603421, 'gamma': 0.869242256759736, 'learning_rate': 0.1452990294484685, 'max_depth': 7, 'min_child_weight': 5, 'n_estimators': 4, 'subsample': 0.850647916320707})
+xgb;XGB_HP_KF;;0.74785;0.74762;Complete; 1mo ago;XGBClassifier( params = { 'colsample_bytree': 0.6278514796444425, 'learning_rate': 0.07068021279873352, 'max_depth': 7, 'n_estimators': 4, 'subsample': 0.763643037745022 } )
+voting(xgb rfc);soft_Voting_RFS_HP_XGB_HP;;0.74048;0.73644;Complete; 1mo ago;VotingClassifier( estimators=[ RandomForestClassifier('max_depth': 3, 'max_features': 1, 'min_samples_leaf': 2, 'min_samples_split': 2), XGBClassifier('colsample_bytree': 0.6580566715010197, 'learning_rate': 0.04956976966729988, 'max_depth': None, 'n_estimators': 500, 'subsample': 0.7679968914163563) ], voting="soft")
+dtc;DTC_HP;;0.68772;0.6905;Complete; 1mo ago;DTC + Hyperopt
+;base;;0.71708;0.71219;Complete; 1mo ago;Submit de prueba - Los Simuladores
