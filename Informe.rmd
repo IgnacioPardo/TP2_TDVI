@@ -7,7 +7,9 @@ author:
 - Ignacio Pardo^[ipardo@mail.utdt.edu | 43243336 | 21R1160]
 date: "8 de Octubre de 2023"
 abstract: |
-    Link al repositorio: https://github.com/IgnacioPardo/TP2_TDVI
+  Predicción de la probabilidad de que un usuario que interactúa con un anuncio específico de un destacado retailer online lleve a cabo la compra del producto anunciado. En el informe se detalla el análisis exploratorio de datos, la ingenieria de atributos llevada a cabo, la estructura del conjunto de validación, los modelos utilizados y la metodología de búsqueda de hiperparámetros.
+  
+  Link al repositorio: https://github.com/IgnacioPardo/TP2_TDVI
 output:
   pdf_document:
     latex_engine: xelatex
@@ -20,10 +22,12 @@ editor_options:
     wrap: 72
 ---
 
+<!--
 \fontfamily{cmr}
 \fontsize{7}{8}
 \fontseries{b}
 \selectfont
+-->
 
 \newpage
 
@@ -80,7 +84,7 @@ Optamos utilizar PaCMAP con PCA para reducir la dimensionalidad de los embedding
 
 ## Armado de conjunto de validación
 
-Inicialmente planteamos dividir el Dataset en 2, un Set de Test y otro de Train, este holdout set era en proporción 25/75. Luego, para poder validar el modelo, separamos un 25% del set de Train para tener un sub_conjunto de validación (SubVal) para entrenar rápido y ver como afectaba al modelo cada cambio hecho a los atributos. Para probar mas a fondo esta ingeniería de atributos detallada previamente, entrenabamos un modelo XGBoost y mediamos su performance haciendo K-Fold Cross Validation con 5 folds sobre el Train Set, si mejoraba, reentrenabamos con todo el Train Set. Una opción que consideramos fue que nuestra validación tenga la misma cantidad de samples que la cantidad de samples de los datos a predecir en Kaggle. En un comienzo nuestro holdout set era 25/75, cuando planteamos esto lo cambiamos a 20/80, con esto logramos que SubVal := 25% de 80% de 100% sea igual cantidad que Test := 20% de 100%. Otra cuestión que consideramos era el desbalance que había en el Dataset respecto a la variable objetivo, ya que en la mayoría de los samples no ocurria la conversión. Para solucionar esto, se planteo utilizar un método de submuestreo aleatorio para reducir la cantidad de muestras de la clase mayoritaria (no vendidos) a la cantidad de muestras de la clase minoritaria (vendidos). Esto se hizo para evitar que el modelo se sobreajuste a la clase mayoritaria y para mejorar el rendimiento del modelo en la clase minoritaria. Sin embargo observamos una performance substancialmente menor en el modelo, por lo que no se utilizó. Alternativamente, implementamos oversamplear la clase minoritaria, pero por los distintos splits que le haciamos a los datasets, sobre todo luego cuando utilizamos K-Fold Cross Validation, no queriamos correr el riesgo de Data Leakage y evitar la repetición de datos en los distintos folds y no se utilizó.
+Inicialmente planteamos dividir el Dataset en 2, un Set de Test y otro de Train, este holdout set era en proporción 25/75. Luego, para poder validar el modelo, separamos un 25% del set de Train para tener un sub_conjunto de validación (SubVal) para entrenar rápido y ver como afectaba al modelo cada cambio hecho a los atributos. Para probar mas a fondo esta ingeniería de atributos detallada previamente, entrenabamos un modelo XGBoost y mediamos su performance haciendo K-Fold Cross Validation con 5 folds sobre el Train Set, si mejoraba, reentrenabamos con todo el Train Set. Una opción que consideramos fue que nuestra validación tenga la misma cantidad de samples que la cantidad de samples de los datos a predecir en Kaggle. En un comienzo nuestro holdout set era 25/75, cuando planteamos esto lo cambiamos a 20/80, con esto logramos que SubVal := 25% de 80% de 100% sea igual cantidad que Test := 20% de 100%. Otra cuestión que consideramos empeoraba nuestro entrenamiento era el desbalance que había en el Dataset respecto a la variable objetivo, ya que en la mayoría de los samples no ocurria la conversión. Para solucionar esto, se planteo utilizar un método de submuestreo aleatorio para reducir la cantidad de muestras de la clase mayoritaria (no vendidos) a la cantidad de muestras de la clase minoritaria (vendidos). Esto se hizo para evitar que el modelo se sobreajuste a la clase mayoritaria y para mejorar el rendimiento del modelo en la clase minoritaria. Sin embargo observamos una performance substancialmente menor en el modelo, por lo que no se utilizó. Planteamos e implementamos como alternativa a esto oversamplear la clase minoritaria para nuestro conjunto de Train, pero por los distintos splits que le haciamos a los datasets para validación, sobre todo luego cuando utilizamos K-Fold Cross Validation, no queriamos correr el riesgo de Data Leakage y evitar la repetición de datos en los distintos folds y no se utilizó.
 
 ## Modelos
  
@@ -124,3 +128,13 @@ En las primeras instancias del desarrollo, optamos por utilizar la librería Hyp
 ## Importancia de atributos
 
 A partir de las importancias de los atributos de nuestros modelos (detallados en el Notebook con el código), logramos identificar algunos destacados que sugerimos incluir en el anuncio de venta. Por ejemplo, si un artículo esta catalogado como un "Lightning Deal" o "Deal of the Day" (Promociónes en las que MeLi ofrece participar a sus Sellers) o que el producto ofrezca "Ahora 12" o Garantía Extendida de MeLi impacta sobre la conversión. Por último, si el producto cuenta con un descuento sobre su precio original tambien se podría incluir en un posible anuncio de venta de su producto. Pero por sobre todo, lo que mas impacta es por una lado: la posición en pantalla y cuantas páginas debe recorrer el usuario hasta encontrar el producto, por lo que el vendedor debe esforzarce en lograr buen posicionamiento; por el otro lado, si el usuario entra o no a la Detail Page del Producto, por lo que el vendedor debería buscar que el usuario ingrese a ella. La desventaja que observamos de esto, es que aunque en un estilo de "prior Bayesiano" aquellos usuarios que visitan la Detail Page mayormente compran el producto, no implica que aumentar la cantidad de usuarios que visitan la PDP vaya a aumentar la cantidad de conversiones.
+
+## Breve Conclusión
+
+Luego de haber finalizado la competencia hicimos un breve analisis de nuestros submits en conjunto con una reflexión de la metodología que se llevo a cabo durante el desarrollo.
+
+![Performance de nuestros submits](src/plots/submission_history.png)
+
+En la Figura 4 se puede ver como al máximo de performance en el Leaderboard público (punto azul) se llego hace un mes y esperabamos lograr superarnos pero, no solo no lo logramos, si no que hubo momentos del desarrollo posterior en que aunque mejorara nuestra validación el score público parecía empeorar. Esto se puede ver entre la linea punteada celeste, donde obtuvimos nuestra mejor performance en el público, y la linea punteada rosa, donde obtuvimos la mayor diferencia entre nuestra validación y el público. Nos dimos cuenta tarde que lo mejor sería comenzar desde algun punto anterior del desarrollo, posiblemente algún atributo rezagado nos haya estado overfiteando en validación y no lo supimos identificar. Finalmente optamos por elegir el modelo de Bagging por motivos que ya detallamos, el cual había alcanzado un ROC AUC similar al de nuestro mejor submit (sobre linea punteada turquesa) con la ingeniería de atributos mas cercana al momento de la misma linea punteada turquesa a la que pudimos revertir.
+
+En retrospectiva nos hubiera gustado haber formado un conjunto de validación que represente mejor los datos a predecir. Por último, si fuesemos a continuar el desarrollo nos gustaría explorar como mejorar los modelos de ensambles que promedian modelos ya que parecen haber logrado reducir el bias mejor que nuestro modelo de bagging. Sobre esta misma nota, exploraríamos como mejorar aún mas el modelo de bagging, ya sea con mas estimadores o tuneo de otros hiperparametros.
